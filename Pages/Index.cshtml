@@ -1,0 +1,105 @@
+﻿@page
+@using WebApplication1.Model
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@section Scripts {
+    <script>
+        $(function() {
+            $("#all-check").click(function() {
+                $(".store-check").attr('checked', this.checked);
+            });
+        })
+    </script>
+}
+
+<div class="ms-3">
+    <h3 class="ms-3">Promotion Page</h3>
+
+    <div class="p-3 border">
+        <form enctype="multipart/form-data" method="post">
+
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label asp-for="PromotionData.Id" class="form-label">Promo ID</label>
+                        <input asp-for="PromotionData.Id" class="form-control" readonly/>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PromotionData.PromotionType.Id" class="form-label">Promo Type</label>
+                        <select asp-for="PromotionData.PromotionType.Id" asp-items="Model.ListPromoType" class="form-select"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PromotionData.PromotionType.AmountTypeId" class="form-label">Value Type</label>
+
+                        <div class="mb-3 input-group">
+                            <select asp-for="PromotionData.PromotionType.AmountTypeId" asp-items="Model.ListValueType" class="form-select"></select>
+                            <input asp-for="PromotionData.PromotionType.Amount" class="form-control ms-3"/>
+                        </div>
+
+                        <span asp-validation-for="PromotionData.PromotionType.Amount" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ItemFile" class="form-label">Item</label>
+                        <input asp-for="ItemFile" class="form-control" type="file">
+                        <span asp-validation-for="ItemFile" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PromotionData.Id" class="form-label">Store</label>
+                        <div class="table-responsive">
+		                    <table class="table">
+			                    <thead>
+				                    <tr>
+					                    <th scope="col">
+                                            <input type="checkbox" class="form-check-input" id="all-check"/>
+                                        </th>
+					                    <th scope="col">ALL</th>
+					                    <th scope="col"></th>
+				                    </tr>
+			                    </thead>
+			                    <tbody>
+                                    @foreach (Store store in Model.ListStore)
+                                    {
+                                        <tr>
+							                <td>
+                                                <input name="ListSelectedStore" value="@store.Id" type="checkbox" class="store-check form-check-input" />
+                                            </td>
+							                <td>@store.Id</td>
+                                            <td>@store.Name</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col">
+                    <div class="mb-3">
+                        <label asp-for="PromotionData.Description" class="form-label">Promo Description</label>
+                        <textarea asp-for="PromotionData.Description" class="form-control"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PromotionData.StartDate" class="form-label">Promo Duration</label>
+
+                        <div class="mb-3 input-group">
+                            <input asp-for="PromotionData.StartDate" class="form-control"/>
+                            <label class="form-label my-auto ms-3"> > </label>
+                            <input asp-for="PromotionData.EndDate" class="form-control ms-3"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" asp-page-handler="Clear" class="btn btn-danger">Cancel</button>
+        </form>
+    </div>
+</div>
